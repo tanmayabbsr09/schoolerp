@@ -69,4 +69,40 @@ class CronController extends Controller
     	$budgets = MoneyFlow::get()->toArray();
         return view('master.money-flow', ['otherLinks' => array('link' => url('/').'#', 'text' => ''), 'customFields' => $customFields, 'budgets' => $budgets, 'formButton' => isset($sid) ? 'Update Details' : 'Save Details', 'pageTitle' => isset($sid) && $sid != '' ? 'Edit Voucher':'Money Management Overview', 'loopInit' => '1']);
     }
+    public function moneyflowDetails(Request $request)
+    {
+        /*
+            Student Admission Fees Calculation 
+        */
+        $getAdmissionDetails = AdmissionFee::with('admission')->get()->toArray();
+        $sumOfFees = 0;
+        $admissionMoneyFlow = array();
+        foreach ($getAdmissionDetails as $key => $value) {
+            /* All Fees ID. Get Total Money by circulating each fees ID */
+            $fees_master_id = json_decode($value['fees_master_id'], true);
+            $totalFeesOfAllStudent = 0;
+            foreach ($fees_master_id as $k => $v) {
+                $getFeesDetails = FeesMaster::select('amount')->get()->toArray();
+                foreach ($getFeesDetails as $key1 => $value1) {
+                    $sumOfFees += $value1['amount'];
+                }
+            }
+            $value['total_money'] = $sumOfFees;
+            //dd($value);
+            $admissionMoneyFlow[] = $value;
+
+        }
+
+        dd($admissionMoneyFlow);
+
+
+        /*
+            Library Fines Calculations
+        */
+
+
+        /*
+            Vouchers Amount Calculations
+        */
+    }
 }

@@ -72,7 +72,7 @@ Route::get('/voucher-list', 'MasterformsController@voucherListing')->name('vouch
 Route::post('/library-return-date-save', 'BookIssueController@saveReturnDate')->name('library-return-date-save');*/
 
 Route::get('/cron-inouts', 'CronController@calculateInout')->name('voucher-list');
-
+Route::get('/money-details', 'CronController@moneyflowDetails');
 
 Route::get('/hostel-room', 'HostelController@hostelRoomAdd')->name('hostel-room');
 Route::post('/hostel-room-save', 'HostelController@hostelRoomAdd')->name('hostel-room-save');
